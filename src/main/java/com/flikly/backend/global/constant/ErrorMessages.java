@@ -19,6 +19,9 @@ public final class ErrorMessages {
 
         public static final String ENCRYPTION_FAILED = "비밀번호 암호화 중 오류가 발생했습니다";
         public static final String MATCH_FAILED = "비밀번호 검증 중 오류가 발생했습니다";
+
+        public static final String BCRYPT_PATTERN = "유효하지 않은 암호화된 비밀번호 형식입니다";
+        public static final String BCRYPT_BLANK = "암호화된 비밀번호는 필수 값입니다";
     }
 
     public static final class Name {

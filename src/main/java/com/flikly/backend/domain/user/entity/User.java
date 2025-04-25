@@ -21,9 +21,11 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Embedded
     @Column(nullable = false, unique = true)
     private Email email;
 
+    @Embedded
     @Column(nullable = false)
     private Password password;
 
@@ -35,11 +37,20 @@ public class User extends BaseEntity {
     private Role role;
 
     @Builder
-    public User(Email email, Password password, Name name, Role role) {
+    public User(Long id, Email email, Password password, Name name, Role role) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.role = role;
     }
 
+    // 메서드는 여전히 행동 중심으로 유지
+    public void updateProfile(Name newName) {
+        this.name = newName;
+    }
+
+    public void changePassword(Password newPassword) {
+        this.password = newPassword;
+    }
 }

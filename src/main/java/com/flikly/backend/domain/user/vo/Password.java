@@ -3,13 +3,18 @@ import com.flikly.backend.domain.user.exception.PasswordException;
 import com.flikly.backend.domain.user.exception.PasswordException.PasswordEncryptionException;
 import com.flikly.backend.domain.user.exception.PasswordException.EmptyPasswordException;
 import com.flikly.backend.domain.user.policy.PasswordPolicy;
+import com.flikly.backend.global.constant.ErrorMessages;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
+
+import java.util.Objects;
 
 @Embeddable
 public class Password {
 
     // 비밀번호 값을 저장하는 필드
+    @Column(name = "password_value")
     private String value;
 
     // 암호화 여부를 나타내는 필드
@@ -50,7 +55,6 @@ public class Password {
         this.encrypted = false;
     }
 
-
     /**
      * 암호화된 비밀번호 생성 팩토리 메서드
      *
@@ -60,10 +64,10 @@ public class Password {
      */
     public static Password ofEncrypted(String encryptedValue) {
         if (encryptedValue == null || encryptedValue.isBlank()) {
-            throw new PasswordEncryptionException("암호화된 비밀번호는 필수 값입니다");
+            throw new PasswordEncryptionException(ErrorMessages.Password.BCRYPT_BLANK);
         }
         if (!encryptedValue.matches("^\\$2[aby]\\$\\d{2}\\$.{53}$")) {
-            throw new PasswordEncryptionException("유효하지 않은 암호화된 비밀번호 형식입니다");
+            throw new PasswordEncryptionException(ErrorMessages.Password.BCRYPT_PATTERN);
         }
         return new Password(encryptedValue, true);
     }
@@ -74,5 +78,21 @@ public class Password {
         this.encrypted = encrypted;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Password password = (Password) o;
+        return Objects.equals(value, password.value);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return encrypted ? "[ENCRYPTED]" : "[RAW]";
+    }
 }

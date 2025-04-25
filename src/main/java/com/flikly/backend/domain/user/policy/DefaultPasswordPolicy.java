@@ -2,11 +2,13 @@ package com.flikly.backend.domain.user.policy;
 
 import com.flikly.backend.domain.user.exception.PasswordException;
 import com.flikly.backend.global.constant.ErrorMessages;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@Component
 public class DefaultPasswordPolicy implements PasswordPolicy {
 
     // 비밀번호 유효성 검증을 위한 정규 표현식
